@@ -40,33 +40,34 @@ export function QuizForm({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-brand-950 to-violet-950 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Background blobs */}
-      <div className="absolute top-1/4 left-0 w-72 h-72 bg-brand-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-0 w-72 h-72 bg-brand-600/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-violet-600/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.08)_1px,transparent_0)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
 
-      <div className="w-full max-w-2xl z-10">
+      <div className="w-full max-w-3xl z-10">
         {/* Progress header */}
-        <div className="mb-8">
+        <div className="mb-7 panel-surface panel-outline rounded-2xl p-4 sm:p-5">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-white/50 text-sm font-medium">
+            <span className="text-white/60 text-sm font-medium">
               {question.category}
             </span>
-            <span className="text-white/50 text-sm font-medium">
+            <span className="text-white/60 text-sm font-medium">
               {questionIndex + 1} / {totalQuestions}
             </span>
           </div>
-          <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+          <div className="w-full bg-white/12 rounded-full h-2.5 overflow-hidden ring-1 ring-white/10">
             <motion.div
-              className="h-2 rounded-full bg-gradient-to-r from-brand-500 to-violet-500"
+              className="h-2.5 rounded-full bg-gradient-to-r from-brand-500 via-brand-400 to-violet-500"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
             />
           </div>
-          <div className="flex justify-between mt-1.5">
-            <span className="text-white/30 text-xs">{progress}% completado</span>
-            <span className="text-white/30 text-xs">{totalQuestions - questionIndex - 1} restantes</span>
+          <div className="flex justify-between mt-2">
+            <span className="text-white/40 text-xs">{progress}% completado</span>
+            <span className="text-white/40 text-xs">{totalQuestions - questionIndex - 1} restantes</span>
           </div>
         </div>
 
@@ -79,11 +80,11 @@ export function QuizForm({
             exit={{ opacity: 0, x: -40 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
           >
-            <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 shadow-2xl mb-6">
+            <div className="panel-surface panel-outline rounded-3xl p-5 sm:p-8 mb-6">
               {/* Question */}
-              <div className="flex items-start gap-4 mb-8">
-                <span className="text-4xl leading-none flex-shrink-0">{question.emoji}</span>
-                <h2 className="font-display text-xl sm:text-2xl font-semibold text-white leading-snug">
+              <div className="flex items-start gap-4 mb-7">
+                <span className="text-4xl leading-none flex-shrink-0 drop-shadow-[0_8px_20px_rgba(76,110,245,0.28)]">{question.emoji}</span>
+                <h2 className="font-display text-xl sm:text-2xl lg:text-[1.72rem] font-semibold text-white leading-snug tracking-tight">
                   {question.text}
                 </h2>
               </div>
@@ -100,7 +101,7 @@ export function QuizForm({
                       whileTap={{ scale: 0.99 }}
                       className={`
                         w-full flex items-center gap-4 p-4 rounded-2xl border bg-gradient-to-r
-                        text-left transition-all duration-200 group
+                        text-left transition-all duration-200 group panel-outline
                         ${isSelected ? OPTION_SELECTED[idx] : OPTION_STYLES[idx]}
                       `}
                     >
@@ -113,7 +114,7 @@ export function QuizForm({
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="ml-auto flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center"
+                          className="ml-auto flex-shrink-0 w-6 h-6 rounded-full bg-white/20 ring-1 ring-white/30 flex items-center justify-center"
                         >
                           <div className="w-2.5 h-2.5 rounded-full bg-white" />
                         </motion.div>
@@ -125,11 +126,11 @@ export function QuizForm({
             </div>
 
             {/* Navigation */}
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center">
               <button
                 onClick={onPrev}
                 disabled={questionIndex === 0}
-                className="flex items-center gap-2 px-5 py-3 rounded-xl border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-5 py-3 rounded-xl border border-white/20 bg-white/5 text-white/65 hover:text-white hover:border-white/40 transition disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Anterior
@@ -143,7 +144,7 @@ export function QuizForm({
                   disabled={!selected}
                   whileHover={{ scale: selected ? 1.02 : 1 }}
                   whileTap={{ scale: selected ? 0.98 : 1 }}
-                  className="flex items-center gap-2 px-7 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 hover:from-brand-500 hover:to-violet-500 text-white font-semibold shadow-lg transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-7 py-3 rounded-xl bg-gradient-to-r from-brand-600 via-brand-500 to-violet-600 hover:from-brand-500 hover:to-violet-500 text-white font-semibold shadow-[0_14px_32px_rgba(43,78,201,0.45)] transition disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Send className="w-4 h-4" />
                   Analizar Perfil
@@ -152,7 +153,7 @@ export function QuizForm({
                 <button
                   onClick={onNext}
                   disabled={!selected}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 hover:from-brand-500 hover:to-violet-500 text-white font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-brand-600 via-brand-500 to-violet-600 hover:from-brand-500 hover:to-violet-500 text-white font-semibold shadow-[0_14px_32px_rgba(43,78,201,0.45)] transition disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Siguiente
                   <ChevronRight className="w-4 h-4" />

@@ -66,13 +66,14 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 pb-16">
       {/* Fixed background elements */}
-      <div className="fixed top-0 left-1/4 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="fixed bottom-0 right-1/4 w-80 h-80 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed top-0 left-1/4 w-96 h-96 bg-brand-600/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed bottom-0 right-1/4 w-80 h-80 bg-violet-600/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.08)_1px,transparent_0)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto px-4 pt-10 space-y-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-10 space-y-8 relative z-10">
 
         {/* ── Hero Section ──────────────────────────────────────────────── */}
-        <motion.div {...fadeUp(0)} className={`bg-gradient-to-br ${DOMAIN_BG[dominantStyle]} border rounded-3xl p-8 shadow-2xl`}>
+        <motion.div {...fadeUp(0)} className={`bg-gradient-to-br ${DOMAIN_BG[dominantStyle]} border rounded-3xl p-6 sm:p-8 panel-outline`}>
           <div className="flex flex-col sm:flex-row items-start gap-6">
             <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${STYLE_GRADIENTS[dominantStyle]} flex items-center justify-center text-4xl shadow-xl flex-shrink-0`}>
               {STYLE_ICONS[dominantStyle]}
@@ -81,7 +82,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-white/40 text-sm font-medium uppercase tracking-wider">Tu Perfil</span>
               </div>
-              <h1 className="font-display text-3xl sm:text-4xl font-bold text-white mb-1">{title}</h1>
+              <h1 className="font-display text-3xl sm:text-4xl font-bold text-white mb-1 tracking-tight">{title}</h1>
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className={`text-sm font-semibold px-3 py-1 rounded-full bg-white/10 ${DOMAIN_TEXT[dominantStyle]}`}>
                   {STYLE_ICONS[dominantStyle]} {STYLE_LABELS[dominantStyle]} (dominante)
@@ -90,7 +91,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
                   {STYLE_ICONS[secondaryStyle]} {STYLE_LABELS[secondaryStyle]} (secundario)
                 </span>
               </div>
-              <p className="text-white/70 leading-relaxed">{summary}</p>
+              <p className="text-white/75 leading-relaxed">{summary}</p>
             </div>
           </div>
         </motion.div>
@@ -98,7 +99,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
         {/* ── Score Cards + Radar ───────────────────────────────────────── */}
         <motion.div {...fadeUp(0.1)} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Score bars */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+          <div className="panel-surface panel-outline rounded-3xl p-6">
             <SectionTitle icon={<Brain className="w-5 h-5" />}>Puntuaciones por Estilo</SectionTitle>
             <div className="space-y-4">
               {(Object.entries(scores) as [keyof typeof scores, number][])
@@ -113,7 +114,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
                         {score} / 12
                       </span>
                     </div>
-                    <div className="w-full bg-white/10 rounded-full h-2.5 overflow-hidden">
+                    <div className="w-full bg-white/12 rounded-full h-2.5 overflow-hidden ring-1 ring-white/10">
                       <motion.div
                         className="h-2.5 rounded-full"
                         style={{ background: STYLE_COLORS[style] }}
@@ -128,7 +129,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
           </div>
 
           {/* Radar chart */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+          <div className="panel-surface panel-outline rounded-3xl p-6">
             <SectionTitle icon={<Star className="w-5 h-5" />}>Perfil Visual</SectionTitle>
             <div className="h-52">
               <ResponsiveContainer width="100%" height="100%">
@@ -157,7 +158,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
         {/* ── Strengths & Challenges ────────────────────────────────────── */}
         <motion.div {...fadeUp(0.15)} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Strengths */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+          <div className="panel-surface panel-outline rounded-3xl p-6">
             <SectionTitle icon={<Zap className="w-5 h-5 text-yellow-400" />}>
               <span className="text-yellow-300">Tus Fortalezas</span>
             </SectionTitle>
@@ -180,7 +181,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
           </div>
 
           {/* Challenges */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+          <div className="panel-surface panel-outline rounded-3xl p-6">
             <SectionTitle icon={<AlertTriangle className="w-5 h-5 text-orange-400" />}>
               <span className="text-orange-300">Áreas de Mejora</span>
             </SectionTitle>
@@ -204,7 +205,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
         </motion.div>
 
         {/* ── Strategies ────────────────────────────────────────────────── */}
-        <motion.div {...fadeUp(0.2)} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+        <motion.div {...fadeUp(0.2)} className="panel-surface panel-outline rounded-3xl p-6">
           <SectionTitle icon={<Lightbulb className="w-5 h-5" />}>Estrategias Personalizadas</SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {strategies.map((s, i) => (
@@ -213,7 +214,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 + i * 0.07 }}
-                className={`bg-gradient-to-br ${DOMAIN_BG[dominantStyle]} border rounded-2xl p-4 hover:scale-[1.02] transition-transform`}
+                className={`bg-gradient-to-br ${DOMAIN_BG[dominantStyle]} border rounded-2xl p-4 hover:scale-[1.02] transition-transform panel-outline`}
               >
                 <div className="text-2xl mb-3">{s.icon}</div>
                 <h4 className="font-display font-semibold text-white text-sm mb-1.5">{s.title}</h4>
@@ -224,13 +225,13 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
         </motion.div>
 
         {/* ── Study Routine ─────────────────────────────────────────────── */}
-        <motion.div {...fadeUp(0.25)} className="bg-gradient-to-r from-brand-900/40 to-violet-900/40 border border-white/10 rounded-3xl p-6">
+        <motion.div {...fadeUp(0.25)} className="bg-gradient-to-r from-brand-900/50 to-violet-900/50 border border-white/10 rounded-3xl p-6 panel-outline">
           <SectionTitle icon={<BookOpen className="w-5 h-5" />}>Tu Rutina de Estudio Ideal</SectionTitle>
-          <p className="text-white/80 leading-relaxed">{studyRoutine}</p>
+          <p className="text-white/85 leading-relaxed">{studyRoutine}</p>
         </motion.div>
 
         {/* ── Recommended Tools ─────────────────────────────────────────── */}
-        <motion.div {...fadeUp(0.3)} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6">
+        <motion.div {...fadeUp(0.3)} className="panel-surface panel-outline rounded-3xl p-6">
           <SectionTitle icon={<ExternalLink className="w-5 h-5" />}>Herramientas Recomendadas</SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {toolsRecommended.map((t, i) => (
@@ -239,7 +240,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 + i * 0.08 }}
-                className="group flex items-start gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 hover:border-white/20 transition-all"
+                className="group flex items-start gap-4 bg-white/6 border border-white/12 rounded-2xl p-4 hover:bg-white/10 hover:border-white/25 transition-all panel-outline"
               >
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600/30 to-violet-600/30 flex items-center justify-center flex-shrink-0">
                   <span className="text-lg">🔧</span>
@@ -267,7 +268,7 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
         </motion.div>
 
         {/* ── Motivational Message ─────────────────────────────────────── */}
-        <motion.div {...fadeUp(0.35)} className="bg-gradient-to-br from-violet-900/50 to-brand-900/50 border border-violet-500/30 rounded-3xl p-8 text-center">
+        <motion.div {...fadeUp(0.35)} className="bg-gradient-to-br from-violet-900/50 to-brand-900/50 border border-violet-500/30 rounded-3xl p-8 text-center panel-outline">
           <Heart className="w-8 h-8 text-violet-400 mx-auto mb-4" />
           <blockquote className="font-display text-xl sm:text-2xl font-semibold text-white leading-relaxed">
             "{motivationalMessage}"
@@ -279,14 +280,14 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
         <motion.div {...fadeUp(0.4)} className="flex flex-col sm:flex-row justify-center gap-4 pt-2">
           <button
             onClick={handlePrint}
-            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition font-medium"
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/20 bg-white/5 text-white/70 hover:text-white hover:border-white/40 transition font-medium"
           >
             <Download className="w-4 h-4" />
             Guardar / Imprimir
           </button>
           <button
             onClick={onRestart}
-            className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 hover:from-brand-500 hover:to-violet-500 text-white font-display font-semibold shadow-lg transition hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-brand-600 via-brand-500 to-violet-600 hover:from-brand-500 hover:to-violet-500 text-white font-display font-semibold shadow-[0_14px_32px_rgba(43,78,201,0.45)] transition hover:scale-[1.02] active:scale-[0.98]"
           >
             <RotateCcw className="w-4 h-4" />
             Hacer de Nuevo
