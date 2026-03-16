@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { MotionProps } from 'framer-motion';
+import { useState } from 'react';
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer,
   PolarRadiusAxis, Tooltip,
@@ -47,6 +48,8 @@ const fadeUp = (delay = 0): Pick<MotionProps, 'initial' | 'animate' | 'transitio
 });
 
 export function ResultsPage({ profile, result, onRestart }: Props) {
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
+
   const { dominantStyle, secondaryStyle, scores, title, summary,
           strengths, challenges, strategies, toolsRecommended,
           studyRoutine, motivationalMessage } = result;
@@ -61,16 +64,51 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
 
   const maxScore = Math.max(...Object.values(scores));
 
-  const handlePrint = () => window.print();
+  const handleDownloadPdf = async () => {
+    try {
+      setIsDownloadingPdf(true);
+
+      const response = await fetch('/api/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profile,
+          result,
+          generatedAt: new Date().toLocaleString('es-MX'),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const safeName = profile.name?.trim().replace(/\s+/g, '-').toLowerCase() || 'usuario';
+
+      link.href = url;
+      link.download = `perfil-aprendizaje-${safeName}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error al descargar PDF:', error);
+      alert('No se pudo generar el PDF. Asegúrate de tener activo el servidor PDF.');
+    } finally {
+      setIsDownloadingPdf(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 pb-16">
       {/* Fixed background elements */}
-      <div className="fixed top-0 left-1/4 w-96 h-96 bg-brand-600/12 rounded-full blur-3xl pointer-events-none" />
-      <div className="fixed bottom-0 right-1/4 w-80 h-80 bg-violet-600/12 rounded-full blur-3xl pointer-events-none" />
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.08)_1px,transparent_0)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
+      <div className="fixed top-0 left-1/4 w-96 h-96 bg-brand-600/12 rounded-full blur-3xl pointer-events-none no-print" />
+      <div className="fixed bottom-0 right-1/4 w-80 h-80 bg-violet-600/12 rounded-full blur-3xl pointer-events-none no-print" />
+      <div className="fixed inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.08)_1px,transparent_0)] [background-size:24px_24px] opacity-[0.08] pointer-events-none no-print" />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-10 space-y-8 relative z-10">
+      <div className="print-area max-w-5xl mx-auto px-4 sm:px-6 pt-10 space-y-8 relative z-10">
 
         {/* ── Hero Section ──────────────────────────────────────────────── */}
         <motion.div {...fadeUp(0)} className={`bg-gradient-to-br ${DOMAIN_BG[dominantStyle]} border rounded-3xl p-6 sm:p-8 panel-outline`}>
@@ -277,13 +315,14 @@ export function ResultsPage({ profile, result, onRestart }: Props) {
         </motion.div>
 
         {/* ── Action buttons ────────────────────────────────────────────── */}
-        <motion.div {...fadeUp(0.4)} className="flex flex-col sm:flex-row justify-center gap-4 pt-2">
+        <motion.div {...fadeUp(0.4)} className="flex flex-col sm:flex-row justify-center gap-4 pt-2 no-print">
           <button
-            onClick={handlePrint}
+            onClick={handleDownloadPdf}
+            disabled={isDownloadingPdf}
             className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/20 bg-white/5 text-white/70 hover:text-white hover:border-white/40 transition font-medium"
           >
             <Download className="w-4 h-4" />
-            Guardar / Imprimir
+            {isDownloadingPdf ? 'Generando PDF...' : 'Descargar PDF'}
           </button>
           <button
             onClick={onRestart}
